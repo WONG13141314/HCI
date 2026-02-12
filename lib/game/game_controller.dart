@@ -1,4 +1,3 @@
-// lib/game/game_controller.dart
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
@@ -6,137 +5,147 @@ import 'package:sensors_plus/sensors_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/species.dart';
 
-// ─── Wildlife instance positioned in "world space" via gyroscope angles ──────
-
 class WildlifeInstance {
   final Species species;
-
-  /// Yaw offset (horizontal) from when the species spawned, in degrees.
-  /// The animal is "anchored" to a heading — as you pan the camera,
-  /// the animal moves on screen relative to where you're pointing.
   final double spawnYaw;
-
-  /// Pitch offset (vertical), in degrees.
   final double spawnPitch;
+  final DateTime spawnTime;
 
   WildlifeInstance({
     required this.species,
     required this.spawnYaw,
     required this.spawnPitch,
-  });
+  }) : spawnTime = DateTime.now();
 }
-
-// ─── Game state ───────────────────────────────────────────────────────────────
 
 enum GameScreen { splash, permission, tutorial, playing }
 
 class GameController extends ChangeNotifier {
-  // ── Screen state ────────────────────────────────────────────────────────────
+  // Screen state
   GameScreen screen = GameScreen.splash;
 
-  // ── Stats ───────────────────────────────────────────────────────────────────
+  // Game stats
   int points = 0;
   List<int> discoveredIds = [];
 
-  // ── Current wildlife ────────────────────────────────────────────────────────
+  // Current wildlife
   WildlifeInstance? currentWildlife;
   bool targetLocked = false;
 
-  // ── Gyroscope / orientation state ───────────────────────────────────────────
-  /// Current integrated yaw (horizontal pan) in degrees.
-  double currentYaw   = 0;
-  /// Current integrated pitch (vertical tilt) in degrees.
+  // Gyroscope / orientation state
+  double currentYaw = 0;
   double currentPitch = 0;
 
-  // ── Motion accumulator for spawning ─────────────────────────────────────────
+  // Motion accumulator for spawning
   double _motionAccum = 0;
+  double _lastMotionUpdate = 0;
 
-  // ── Status message ───────────────────────────────────────────────────────────
+  // Status message
   String statusMessage = '';
   bool statusVisible = false;
   Timer? _statusTimer;
 
-  // ── Internal ─────────────────────────────────────────────────────────────────
+  // Internal
   StreamSubscription? _gyroSub;
   Timer? _spawnTimer;
   final Random _rng = Random();
 
-  // ── Field of view used for mapping gyro angle → screen pixel ────────────────
-  /// Horizontal FOV in degrees (typical phone camera ~60°)
+  // Field of view
   static const double hFov = 60.0;
-  /// Vertical FOV in degrees
   static const double vFov = 45.0;
 
-  // ─── Init ──────────────────────────────────────────────────────────────────
+  // Smoothing for better AR experience
+  static const double _smoothingFactor = 0.7;
+  double _smoothedYaw = 0;
+  double _smoothedPitch = 0;
 
   GameController() {
     _loadProgress();
-    // Auto-advance splash after 2.6 s
-    Future.delayed(const Duration(milliseconds: 2600), () {
-      screen = GameScreen.permission;
-      notifyListeners();
+    Future.delayed(const Duration(milliseconds: 2800), () {
+      if (screen == GameScreen.splash) {
+        screen = GameScreen.permission;
+        notifyListeners();
+      }
     });
   }
 
   Future<void> _loadProgress() async {
-    final prefs = await SharedPreferences.getInstance();
-    discoveredIds = (prefs.getStringList('discovered') ?? [])
-        .map(int.parse)
-        .toList();
-    points = prefs.getInt('points') ?? 0;
-    notifyListeners();
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      discoveredIds = (prefs.getStringList('discovered') ?? [])
+          .map((e) => int.tryParse(e) ?? 0)
+          .where((id) => id > 0)
+          .toList();
+      points = prefs.getInt('points') ?? 0;
+      notifyListeners();
+    } catch (e) {
+      debugPrint('Error loading progress: $e');
+    }
   }
 
   Future<void> _saveProgress() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setStringList('discovered', discoveredIds.map((e) => '$e').toList());
-    await prefs.setInt('points', points);
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setStringList(
+        'discovered',
+        discoveredIds.map((e) => e.toString()).toList(),
+      );
+      await prefs.setInt('points', points);
+    } catch (e) {
+      debugPrint('Error saving progress: $e');
+    }
   }
-
-  // ─── Screen transitions ────────────────────────────────────────────────────
 
   void startGame() {
     screen = GameScreen.playing;
     _startGyroscope();
-    _spawnTimer = Timer.periodic(const Duration(milliseconds: 300), (_) => _checkMotion());
-    showStatus('📱 Move your camera around slowly...');
+    _spawnTimer = Timer.periodic(
+      const Duration(milliseconds: 400),
+      (_) => _checkMotion(),
+    );
+    showStatus('🌿 Move your camera slowly to discover wildlife...');
     notifyListeners();
   }
 
   void skipToGame() {
     screen = GameScreen.playing;
     _startGyroscope();
-    _spawnTimer = Timer.periodic(const Duration(milliseconds: 300), (_) => _checkMotion());
-    showStatus('📱 Move your camera around slowly...');
+    _spawnTimer = Timer.periodic(
+      const Duration(milliseconds: 400),
+      (_) => _checkMotion(),
+    );
+    showStatus('🌿 Using forest view mode');
     notifyListeners();
   }
 
-  // ─── Gyroscope integration (FIXED - Natural camera movement) ───────────────
-
   void _startGyroscope() {
-    _gyroSub = gyroscopeEventStream(samplingPeriod: SensorInterval.gameInterval)
-        .listen((GyroscopeEvent e) {
-      // e.x = pitch rate (rad/s), e.y = yaw rate (rad/s), e.z = roll rate
-      // Integrate at ~50Hz (gameInterval ≈ 20ms)
-      const dt = 0.02;
+    _gyroSub = gyroscopeEventStream(
+      samplingPeriod: SensorInterval.gameInterval,
+    ).listen((GyroscopeEvent e) {
+      const dt = 0.02; // ~50Hz
 
-      // FIXED: Reversed the signs to match natural camera movement
-      // When you pan RIGHT, yaw should INCREASE (positive)
-      // When you tilt UP, pitch should INCREASE (positive)
-      final dYaw   = -e.y * dt * (180 / pi);  // Negated for natural movement
-      final dPitch = -e.x * dt * (180 / pi);  // Negated for natural movement
+      // Calculate angular changes
+      final dYaw = -e.y * dt * (180 / pi);
+      final dPitch = -e.x * dt * (180 / pi);
 
-      currentYaw   += dYaw;
-      currentPitch  = (currentPitch + dPitch).clamp(-60.0, 60.0);
+      // Update raw values
+      currentYaw += dYaw;
+      currentPitch = (currentPitch + dPitch).clamp(-70.0, 70.0);
 
-      // Accumulate movement magnitude for spawn trigger
-      _motionAccum += (dYaw.abs() + dPitch.abs());
+      // Apply smoothing for better visual experience
+      _smoothedYaw = _smoothedYaw * _smoothingFactor + 
+                     currentYaw * (1 - _smoothingFactor);
+      _smoothedPitch = _smoothedPitch * _smoothingFactor + 
+                       currentPitch * (1 - _smoothingFactor);
+
+      // Accumulate movement magnitude
+      final motionMagnitude = dYaw.abs() + dPitch.abs();
+      _motionAccum += motionMagnitude;
+      _lastMotionUpdate = DateTime.now().millisecondsSinceEpoch.toDouble();
 
       notifyListeners();
     });
   }
-
-  // ─── Motion → spawn check ──────────────────────────────────────────────────
 
   void _checkMotion() {
     if (currentWildlife != null) {
@@ -144,15 +153,21 @@ class GameController extends ChangeNotifier {
       return;
     }
 
-    if (_motionAccum > 1.5) {
+    // Decay motion over time
+    final now = DateTime.now().millisecondsSinceEpoch.toDouble();
+    final timeSinceLastMotion = (now - _lastMotionUpdate) / 1000;
+    if (timeSinceLastMotion > 0.5) {
+      _motionAccum = (_motionAccum * 0.9).clamp(0, double.infinity);
+    }
+
+    // Spawn if enough motion accumulated
+    if (_motionAccum > 2.0) {
       _motionAccum = 0;
-      if (_rng.nextDouble() < 0.55) _spawnWildlife();
-    } else {
-      _motionAccum = (_motionAccum - 0.5).clamp(0, double.infinity);
+      if (_rng.nextDouble() < 0.6) {
+        _spawnWildlife();
+      }
     }
   }
-
-  // ─── Spawn wildlife ────────────────────────────────────────────────────────
 
   void _spawnWildlife() {
     final available = allSpecies
@@ -160,58 +175,64 @@ class GameController extends ChangeNotifier {
         .toList();
 
     if (available.isEmpty) {
-      showStatus('🎉 All species discovered!');
+      // All discovered - spawn random one
+      final sp = allSpecies[_rng.nextInt(allSpecies.length)];
+      showStatus('${sp.icon} ${sp.name} appeared again!');
+      
+      final yawOffset = (_rng.nextDouble() * hFov * 2.5) - hFov * 1.25;
+      final pitchOffset = (_rng.nextDouble() * vFov * 1.5) - vFov * 0.75;
+
+      currentWildlife = WildlifeInstance(
+        species: sp,
+        spawnYaw: currentYaw + yawOffset,
+        spawnPitch: currentPitch + pitchOffset,
+      );
+      targetLocked = false;
+      notifyListeners();
       return;
     }
 
     final selected = available[_rng.nextInt(available.length)];
 
-    // Place animal at a random angular offset from current camera direction.
-    // Offset is within ±(FOV*0.8) so it's just off-screen or near edge.
-    // Player must pan to bring it into the center viewfinder zone.
+    // Place animal at random offset from current camera direction
     double yawOffset, pitchOffset;
     int attempts = 0;
     do {
-      // Random offset in range [-FOV*1.5 .. +FOV*1.5], excluding center ±15°
-      yawOffset   = (_rng.nextDouble() * hFov * 3) - hFov * 1.5;
-      pitchOffset = (_rng.nextDouble() * vFov * 2) - vFov;
+      yawOffset = (_rng.nextDouble() * hFov * 2.5) - hFov * 1.25;
+      pitchOffset = (_rng.nextDouble() * vFov * 1.5) - vFov * 0.75;
       attempts++;
-    } while (attempts < 30 && yawOffset.abs() < 15 && pitchOffset.abs() < 10);
+    } while (attempts < 20 && 
+             yawOffset.abs() < 12 && 
+             pitchOffset.abs() < 8);
 
     currentWildlife = WildlifeInstance(
       species: selected,
-      spawnYaw:   currentYaw   + yawOffset,
+      spawnYaw: currentYaw + yawOffset,
       spawnPitch: currentPitch + pitchOffset,
     );
 
     targetLocked = false;
-    showStatus('${selected.icon} ${selected.name} appeared! Pan to find it!');
+    showStatus('${selected.icon} ${selected.name} spotted nearby!');
     notifyListeners();
   }
 
-  // ─── Compute screen position of wildlife ──────────────────────────────────
-  /// Returns normalised [0..1] x,y position on screen for the current wildlife,
-  /// based on how far the camera has panned from the spawn heading.
-  /// Returns null if no wildlife active.
   Offset? wildlifeScreenPosition(Size screenSize) {
     if (currentWildlife == null) return null;
 
-    // Angular difference between current camera direction and spawn direction
-    final dYaw   = currentWildlife!.spawnYaw   - currentYaw;
-    final dPitch = currentWildlife!.spawnPitch - currentPitch;
+    // Use smoothed values for smoother on-screen movement
+    final dYaw = currentWildlife!.spawnYaw - _smoothedYaw;
+    final dPitch = currentWildlife!.spawnPitch - _smoothedPitch;
 
-    // Map angle → screen fraction
-    // When dYaw == 0, animal is centred horizontally
-    final xFrac = 0.5 + (dYaw   / hFov);
+    // Map angle to screen fraction
+    final xFrac = 0.5 + (dYaw / hFov);
     final yFrac = 0.5 + (dPitch / vFov);
 
     return Offset(
-      (xFrac * screenSize.width).clamp(-100, screenSize.width  + 100),
-      (yFrac * screenSize.height).clamp(-100, screenSize.height + 100),
+      (xFrac * screenSize.width).clamp(-150, screenSize.width + 150),
+      (yFrac * screenSize.height).clamp(-150, screenSize.height + 150),
     );
   }
 
-  // ─── Check if wildlife is in viewfinder ───────────────────────────────────
   void checkTargeting(Offset wildlifePos, Rect viewfinderRect) {
     final inTarget = viewfinderRect.contains(wildlifePos);
 
@@ -221,11 +242,10 @@ class GameController extends ChangeNotifier {
     }
   }
 
-  // ─── Scan / capture ───────────────────────────────────────────────────────
   bool scanTarget() {
     if (!targetLocked || currentWildlife == null) return false;
 
-    final sp    = currentWildlife!.species;
+    final sp = currentWildlife!.species;
     final isNew = !discoveredIds.contains(sp.id);
 
     if (isNew) {
@@ -235,24 +255,39 @@ class GameController extends ChangeNotifier {
     }
 
     currentWildlife = null;
-    targetLocked    = false;
+    targetLocked = false;
     notifyListeners();
     return isNew;
   }
 
-  // ─── Status message ───────────────────────────────────────────────────────
   void showStatus(String msg) {
     statusMessage = msg;
     statusVisible = true;
     _statusTimer?.cancel();
-    _statusTimer = Timer(const Duration(milliseconds: 2800), () {
+    _statusTimer = Timer(const Duration(milliseconds: 3000), () {
       statusVisible = false;
       notifyListeners();
     });
     notifyListeners();
   }
 
-  // ─── Dispose ──────────────────────────────────────────────────────────────
+  // Reset game progress
+  Future<void> resetProgress() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove('discovered');
+      await prefs.remove('points');
+      discoveredIds.clear();
+      points = 0;
+      currentWildlife = null;
+      targetLocked = false;
+      notifyListeners();
+      showStatus('🔄 Progress reset!');
+    } catch (e) {
+      debugPrint('Error resetting progress: $e');
+    }
+  }
+
   @override
   void dispose() {
     _gyroSub?.cancel();

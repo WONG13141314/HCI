@@ -1,6 +1,10 @@
-// lib/models/species.dart
-
-enum ConservationStatus { critical, endangered, vulnerable, threatened, rare }
+enum ConservationStatus { 
+  critical, 
+  endangered, 
+  vulnerable, 
+  threatened, 
+  rare 
+}
 
 class Species {
   final int id;
@@ -27,16 +31,34 @@ class Species {
 
   String get statusLabel {
     switch (status) {
-      case ConservationStatus.critical:    return 'Critically Endangered';
-      case ConservationStatus.endangered:  return 'Endangered';
-      case ConservationStatus.vulnerable:  return 'Vulnerable';
-      case ConservationStatus.threatened:  return 'Near Threatened';
-      case ConservationStatus.rare:        return 'Rare';
+      case ConservationStatus.critical:
+        return 'Critically Endangered';
+      case ConservationStatus.endangered:
+        return 'Endangered';
+      case ConservationStatus.vulnerable:
+        return 'Vulnerable';
+      case ConservationStatus.threatened:
+        return 'Near Threatened';
+      case ConservationStatus.rare:
+        return 'Rare';
+    }
+  }
+
+  String get statusDescription {
+    switch (status) {
+      case ConservationStatus.critical:
+        return 'Facing an extremely high risk of extinction';
+      case ConservationStatus.endangered:
+        return 'Facing a very high risk of extinction';
+      case ConservationStatus.vulnerable:
+        return 'Facing a high risk of extinction';
+      case ConservationStatus.threatened:
+        return 'Likely to become endangered soon';
+      case ConservationStatus.rare:
+        return 'Small population with limited distribution';
     }
   }
 }
-
-// ─── All 6 Genting species ───────────────────────────────────────────────────
 
 const List<Species> allSpecies = [
   Species(
@@ -46,17 +68,16 @@ const List<Species> allSpecies = [
     icon: '🦍',
     status: ConservationStatus.endangered,
     points: 150,
-    desc: "The largest gibbon, known for loud calls traveling 2 miles. "
-          "Critical seed dispersers in Genting's 130-million-year-old rainforest.",
+    desc: "The largest gibbon species, renowned for their powerful calls that can travel up to 2 miles through the rainforest. These magnificent primates are critical seed dispersers in Genting's ancient 130-million-year-old rainforest ecosystem.",
     facts: [
-      'Swing up to 40 feet between trees with powerful arms',
-      'Live in tight family groups of 2–6 individuals',
-      'Inflate throat sac to amplify territorial calls',
-      'Primarily eat fruits, leaves, and flowers',
+      'Can swing up to 40 feet between trees using their powerful arms',
+      'Live in close-knit family groups of 2-6 individuals',
+      'Inflate their throat sac to amplify territorial calls at dawn',
+      'Diet consists primarily of fruits, leaves, and flowers',
+      'Form lifelong monogamous pairs'
     ],
     conservation:
-        'Habitat loss is the main threat. Genting protects 10,000+ acres '
-        'and monitors populations with FRIM.',
+        'Habitat loss due to deforestation is the main threat. Genting Nature Adventures protects over 10,000 acres of pristine habitat and monitors populations in partnership with FRIM (Forest Research Institute Malaysia).',
   ),
   Species(
     id: 2,
@@ -65,34 +86,34 @@ const List<Species> allSpecies = [
     icon: '🦜',
     status: ConservationStatus.threatened,
     points: 100,
-    desc: 'Highland bird with spectacular plumage. Males display scarlet rumps '
-          'and melodious whistling calls at dawn.',
+    desc: 'A stunning highland bird with spectacular plumage featuring vibrant scarlet patches. Males display their magnificent coloring during territorial displays and produce melodious whistling calls at dawn.',
     facts: [
-      'Nest in tree cavities 3–8 meters high',
+      'Nest in tree cavities 3-8 meters above ground',
       'Feed on insects, fruits, and small lizards',
-      'Most active during dawn and dusk',
-      'Territorial during March–June breeding',
+      'Most active during dawn and dusk twilight hours',
+      'Highly territorial during March-June breeding season',
+      'Can remain motionless for long periods while hunting'
     ],
     conservation:
-        "Protected in Genting's zones as part of 254+ monitored bird species.",
+        "Protected within Genting's conservation zones as part of the 254+ monitored bird species. Highland forest preservation is critical for their survival.",
   ),
   Species(
     id: 3,
-    name: 'Thismia limkokthayi',
+    name: 'Thismia Fairy Lantern',
     latin: 'Thismia limkokthayi',
     icon: '🏵️',
     status: ConservationStatus.critical,
     points: 200,
-    desc: 'Fairy lantern discovered at Genting in 2024! Relies entirely on fungi. '
-          'Named after Tan Sri Lim Kok Thay.',
+    desc: 'An extraordinary fairy lantern plant discovered at Genting in 2024! This remarkable species relies entirely on fungi for survival and was named in honor of Tan Sri Lim Kok Thay for his conservation efforts.',
     facts: [
-      'Only 5 cm tall — incredibly easy to miss',
-      'Lives underground except when flowering',
-      'Discovered by Eddie Chan, GNA Manager',
-      'First of its kind in Malaysia',
+      'Only 5 cm tall - incredibly easy to miss in the forest',
+      'Lives completely underground except when flowering',
+      'Discovered by Eddie Chan, GNA Conservation Manager',
+      'First species of its kind documented in Malaysia',
+      'Has no chlorophyll - depends on fungal partners'
     ],
     conservation:
-        'Critically endangered. GNA operates tissue culture lab for cultivation.',
+        'Critically endangered with extremely limited habitat. GNA operates a specialized tissue culture laboratory for conservation propagation and research.',
   ),
   Species(
     id: 4,
@@ -101,15 +122,16 @@ const List<Species> allSpecies = [
     icon: '🌿',
     status: ConservationStatus.vulnerable,
     points: 80,
-    desc: 'Carnivorous plant adapted to poor highland soils. Pitcher traps '
-          'digest insects for nutrients.',
+    desc: 'A fascinating carnivorous plant perfectly adapted to poor highland soils. The pitcher-shaped trap contains digestive fluid that breaks down insects to provide essential nutrients.',
     facts: [
-      'Grows above 2000 meters elevation',
-      'Holds up to 200 ml digestive fluid',
-      'Attracts prey with sweet nectar',
-      'Some specimens over 100 years old',
+      'Grows exclusively above 2000 meters elevation',
+      'Each pitcher can hold up to 200 ml of digestive fluid',
+      'Attracts prey with sweet-smelling nectar around the rim',
+      'Some specimens can live for over 100 years',
+      'Different pitcher shapes specialize in catching different insects'
     ],
-    conservation: 'Protected in Montane Forests within GNA boundaries.',
+    conservation: 
+        'Protected in Montane Forests within GNA conservation boundaries. Climate change and habitat loss pose significant threats to highland species.',
   ),
   Species(
     id: 5,
@@ -118,15 +140,16 @@ const List<Species> allSpecies = [
     icon: '🌸',
     status: ConservationStatus.rare,
     points: 90,
-    desc: 'Beautiful terrestrial orchid in Montane Oak Forests. '
-          'Indicator species for forest health.',
+    desc: 'A beautiful terrestrial orchid found in Montane Oak Forests. This species serves as an important indicator of forest health and ecosystem balance.',
     facts: [
-      'Blooms March–June with vibrant flowers',
-      'Flowers last up to 3 weeks',
-      'Pollinated by specific native bees',
-      'Indicator for ecosystem health',
+      'Blooms March-June with vibrant, long-lasting flowers',
+      'Individual flowers can last up to 3 weeks',
+      'Pollinated by specific native bee species',
+      'Serves as an indicator species for ecosystem health',
+      'Requires pristine forest conditions to thrive'
     ],
-    conservation: 'Protected under GNA-FRIM biodiversity monitoring.',
+    conservation: 
+        'Protected under GNA-FRIM biodiversity monitoring programs. Habitat preservation and native pollinator conservation are key to survival.',
   ),
   Species(
     id: 6,
@@ -135,15 +158,15 @@ const List<Species> allSpecies = [
     icon: '🦅',
     status: ConservationStatus.vulnerable,
     points: 120,
-    desc: 'Majestic bird with distinctive casque. Vital seed disperser and '
-          'flagship conservation species.',
+    desc: 'A majestic bird with a distinctive casque on its enormous bill. As a vital seed disperser for large-seeded trees, the Great Hornbill is a flagship species for rainforest conservation.',
     facts: [
-      'Wingspan up to 1.5 meters',
-      'Females seal inside tree cavities when nesting',
-      'Live up to 50 years in wild',
-      'Diet primarily figs and forest fruits',
+      'Impressive wingspan reaching up to 1.5 meters',
+      'Females seal themselves inside tree cavities while nesting',
+      'Can live up to 50 years in the wild',
+      'Diet consists primarily of figs and large forest fruits',
+      'Pairs mate for life and return to the same nesting sites'
     ],
     conservation:
-        'Spotted regularly in Batang Kali–Genting zone. Protected under wildlife acts.',
+        'Regularly spotted in the Batang Kali-Genting conservation corridor. Protected under Malaysian wildlife acts. Requires large, mature trees for nesting.',
   ),
 ];

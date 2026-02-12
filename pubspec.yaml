@@ -1,7 +1,7 @@
 name: wildtrack_ar
-description: WildTrack AR - Genting Nature Adventures
+description: WildTrack AR - Genting Nature Adventures - Educational Wildlife Conservation Game
 publish_to: 'none'
-version: 1.0.0+1
+version: 2.0.0+1
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
@@ -31,6 +31,9 @@ dependencies:
   # Persistent storage (save discovered species)
   shared_preferences: ^2.5.4
 
+  # Additional modern UI enhancements
+  google_fonts: ^6.1.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -38,3 +41,8 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  
+  # Custom assets (if needed in future)
+  # assets:
+  #   - assets/images/
+  #   - assets/sounds/
