@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../models/species.dart';
 
 class WildlifeSprite extends StatefulWidget {
@@ -81,7 +80,7 @@ class _WildlifeSpriteState extends State<WildlifeSprite>
           ),
           child: Text(
             widget.species.name,
-            style: GoogleFonts.poppins(
+            style: TextStyle(fontFamily: 'Roboto', 
               color: Colors.white,
               fontSize: 13,
               fontWeight: FontWeight.w600,

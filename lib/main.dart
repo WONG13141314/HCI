@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:camera/camera.dart';
 import 'package:provider/provider.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'game/game_controller.dart';
+// REMOVED: import 'game/game_controller.dart';
 import 'screens/splash_screen.dart';
 import 'screens/permission_screen.dart';
 import 'screens/ar_game_screen.dart';
@@ -55,11 +54,11 @@ class WildTrackApp extends StatelessWidget {
             surface: const Color(0xFF1a1a1a),
             background: const Color(0xFF0a0a0a),
           ),
-          textTheme: GoogleFonts.poppinsTextTheme(
-            ThemeData.dark().textTheme,
-          ).apply(
+          // CHANGED: Using default font instead of Google Fonts
+          textTheme: ThemeData.dark().textTheme.apply(
             bodyColor: Colors.white,
             displayColor: Colors.white,
+            fontFamily: 'Roboto', // System font
           ),
           cardTheme: CardTheme(
             elevation: 8,
@@ -74,9 +73,11 @@ class WildTrackApp extends StatelessWidget {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16),
               ),
-              textStyle: GoogleFonts.poppins(
+              // CHANGED: Using TextStyle instead of GoogleFonts
+              textStyle: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
+                fontFamily: 'Roboto',
               ),
             ),
           ),

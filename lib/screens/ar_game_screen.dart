@@ -5,7 +5,6 @@ import 'package:camera/camera.dart';
 import 'package:provider/provider.dart';
 import 'package:vibration/vibration.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../game/game_controller.dart';
 import '../models/species.dart';
 import '../widgets/ar_viewfinder.dart';
@@ -172,7 +171,7 @@ class _ArGameScreenState extends State<ArGameScreen>
                   const SizedBox(width: 16),
                   Text(
                     'My Collection',
-                    style: GoogleFonts.poppins(
+                    style: TextStyle(fontFamily: 'Roboto', 
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
@@ -191,7 +190,7 @@ class _ArGameScreenState extends State<ArGameScreen>
                       Text(
                         'No species discovered yet!\n\nMove your camera to find wildlife.',
                         textAlign: TextAlign.center,
-                        style: GoogleFonts.poppins(
+                        style: TextStyle(fontFamily: 'Roboto', 
                           fontSize: 14,
                           color: Colors.white.withOpacity(0.7),
                           height: 1.6,
@@ -230,7 +229,7 @@ class _ArGameScreenState extends State<ArGameScreen>
                                 children: [
                                   Text(
                                     sp.name,
-                                    style: GoogleFonts.poppins(
+                                    style: TextStyle(fontFamily: 'Roboto', 
                                       fontSize: 16,
                                       fontWeight: FontWeight.w600,
                                       color: Colors.white,
@@ -238,7 +237,7 @@ class _ArGameScreenState extends State<ArGameScreen>
                                   ),
                                   Text(
                                     sp.statusLabel,
-                                    style: GoogleFonts.poppins(
+                                    style: TextStyle(fontFamily: 'Roboto', 
                                       fontSize: 12,
                                       color: Colors.white.withOpacity(0.6),
                                     ),
@@ -257,7 +256,7 @@ class _ArGameScreenState extends State<ArGameScreen>
                               ),
                               child: Text(
                                 '+${sp.points}',
-                                style: GoogleFonts.poppins(
+                                style: TextStyle(fontFamily: 'Roboto', 
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white,
@@ -285,7 +284,7 @@ class _ArGameScreenState extends State<ArGameScreen>
                   ),
                   child: Text(
                     'Close',
-                    style: GoogleFonts.poppins(
+                    style: TextStyle(fontFamily: 'Roboto', 
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
                     ),
@@ -325,7 +324,7 @@ class _ArGameScreenState extends State<ArGameScreen>
                   const SizedBox(width: 16),
                   Text(
                     'How to Play',
-                    style: GoogleFonts.poppins(
+                    style: TextStyle(fontFamily: 'Roboto', 
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
@@ -373,7 +372,7 @@ class _ArGameScreenState extends State<ArGameScreen>
                         const SizedBox(width: 12),
                         Text(
                           'Progress: ${ctrl.discoveredIds.length}/6',
-                          style: GoogleFonts.poppins(
+                          style: TextStyle(fontFamily: 'Roboto', 
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
                             color: Colors.white,
@@ -399,7 +398,7 @@ class _ArGameScreenState extends State<ArGameScreen>
                   ),
                   child: Text(
                     'Got it!',
-                    style: GoogleFonts.poppins(
+                    style: TextStyle(fontFamily: 'Roboto', 
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
                     ),
@@ -502,7 +501,7 @@ class _ArGameScreenState extends State<ArGameScreen>
                           Expanded(
                             child: Text(
                               'Move your camera slowly...',
-                              style: GoogleFonts.poppins(
+                              style: TextStyle(fontFamily: 'Roboto', 
                                 color: Colors.white,
                                 fontSize: 15,
                                 fontWeight: FontWeight.w600,
@@ -566,7 +565,7 @@ class _ArGameScreenState extends State<ArGameScreen>
                       ),
                       child: Text(
                         ctrl.statusMessage,
-                        style: GoogleFonts.poppins(
+                        style: TextStyle(fontFamily: 'Roboto', 
                           color: Colors.white,
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
@@ -652,7 +651,7 @@ class _StatBox extends StatelessWidget {
           const SizedBox(width: 10),
           Text(
             value,
-            style: GoogleFonts.poppins(
+            style: TextStyle(fontFamily: 'Roboto', 
               color: Colors.white,
               fontSize: 17,
               fontWeight: FontWeight.bold,
@@ -784,7 +783,7 @@ class _ScanButton extends StatelessWidget {
             ),
             child: Text(
               'TAP TO SCAN!',
-              style: GoogleFonts.poppins(
+              style: TextStyle(fontFamily: 'Roboto', 
                 color: Colors.white,
                 fontSize: 11,
                 fontWeight: FontWeight.bold,
@@ -824,7 +823,7 @@ class _HelpStep extends StatelessWidget {
           child: Center(
             child: Text(
               number,
-              style: GoogleFonts.poppins(
+              style: TextStyle(fontFamily: 'Roboto', 
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
                 color: const Color(0xFF10b981),
@@ -836,7 +835,7 @@ class _HelpStep extends StatelessWidget {
         Expanded(
           child: Text(
             text,
-            style: GoogleFonts.poppins(
+            style: TextStyle(fontFamily: 'Roboto', 
               fontSize: 14,
               color: Colors.white.withOpacity(0.9),
             ),
@@ -918,7 +917,7 @@ class _ForestFallback extends StatelessWidget {
                   const SizedBox(height: 16),
                   Text(
                     'Forest View Mode',
-                    style: GoogleFonts.poppins(
+                    style: TextStyle(fontFamily: 'Roboto', 
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
@@ -928,7 +927,7 @@ class _ForestFallback extends StatelessWidget {
                   const SizedBox(height: 8),
                   Text(
                     'Camera not available.\nUsing simulated forest environment.',
-                    style: GoogleFonts.poppins(
+                    style: TextStyle(fontFamily: 'Roboto', 
                       fontSize: 13,
                       color: Colors.white.withOpacity(0.8),
                     ),

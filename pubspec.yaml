@@ -32,7 +32,6 @@ dependencies:
   shared_preferences: ^2.5.4
 
   # Additional modern UI enhancements
-  google_fonts: ^6.1.0
 
 dev_dependencies:
   flutter_test:

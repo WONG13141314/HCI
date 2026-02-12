@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../game/game_controller.dart';
 
@@ -60,7 +59,7 @@ class PermissionScreen extends StatelessWidget {
               // Title
               Text(
                 'Camera Access',
-                style: GoogleFonts.poppins(
+                style: TextStyle(fontFamily: 'Roboto', 
                   fontSize: 36,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
@@ -78,7 +77,7 @@ class PermissionScreen extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: Text(
                   'Enable camera access to experience immersive AR wildlife tracking.\n\nMove your phone around to discover and learn about endangered species in their natural habitat!',
-                  style: GoogleFonts.poppins(
+                  style: TextStyle(fontFamily: 'Roboto', 
                     fontSize: 16,
                     color: Colors.white,
                     height: 1.6,
@@ -114,7 +113,7 @@ class PermissionScreen extends StatelessWidget {
                       const SizedBox(width: 12),
                       Text(
                         'Enable Camera',
-                        style: GoogleFonts.poppins(
+                        style: TextStyle(fontFamily: 'Roboto', 
                           fontSize: 18,
                           fontWeight: FontWeight.w600,
                         ),
@@ -149,7 +148,7 @@ class PermissionScreen extends StatelessWidget {
                       const SizedBox(width: 10),
                       Text(
                         'Use Forest View',
-                        style: GoogleFonts.poppins(
+                        style: TextStyle(fontFamily: 'Roboto', 
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
                         ),
@@ -214,7 +213,7 @@ class TutorialScreen extends StatelessWidget {
               // Title
               Text(
                 'How It Works',
-                style: GoogleFonts.poppins(
+                style: TextStyle(fontFamily: 'Roboto', 
                   fontSize: 36,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
@@ -280,7 +279,7 @@ class TutorialScreen extends StatelessWidget {
                         const SizedBox(width: 12),
                         Text(
                           'Discover all 6 endangered species',
-                          style: GoogleFonts.poppins(
+                          style: TextStyle(fontFamily: 'Roboto', 
                             fontSize: 14,
                             color: Colors.white,
                             fontWeight: FontWeight.w600,
@@ -316,7 +315,7 @@ class TutorialScreen extends StatelessWidget {
                     children: [
                       Text(
                         'Start Exploring',
-                        style: GoogleFonts.poppins(
+                        style: TextStyle(fontFamily: 'Roboto', 
                           fontSize: 18,
                           fontWeight: FontWeight.w600,
                         ),
@@ -385,7 +384,7 @@ class _InstructionCard extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: GoogleFonts.poppins(
+                  style: TextStyle(fontFamily: 'Roboto', 
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
                     color: Colors.white,
@@ -394,7 +393,7 @@ class _InstructionCard extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(
                   description,
-                  style: GoogleFonts.poppins(
+                  style: TextStyle(fontFamily: 'Roboto', 
                     fontSize: 13,
                     color: Colors.white.withOpacity(0.7),
                     height: 1.4,

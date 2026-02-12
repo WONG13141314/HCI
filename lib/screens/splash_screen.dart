@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -63,7 +62,7 @@ class SplashScreen extends StatelessWidget {
             // App title
             Text(
               'WildTrack AR',
-              style: GoogleFonts.poppins(
+              style: TextStyle(fontFamily: 'Roboto', 
                 fontSize: 42,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
@@ -86,7 +85,7 @@ class SplashScreen extends StatelessWidget {
             // Subtitle
             Text(
               'Genting Nature Adventures',
-              style: GoogleFonts.poppins(
+              style: TextStyle(fontFamily: 'Roboto', 
                 fontSize: 18,
                 fontWeight: FontWeight.w500,
                 color: Colors.white.withOpacity(0.9),
@@ -105,7 +104,7 @@ class SplashScreen extends StatelessWidget {
               child: Text(
                 'Discover • Learn • Protect',
                 textAlign: TextAlign.center,
-                style: GoogleFonts.poppins(
+                style: TextStyle(fontFamily: 'Roboto', 
                   fontSize: 14,
                   fontWeight: FontWeight.w400,
                   color: Colors.white.withOpacity(0.85),
@@ -123,7 +122,7 @@ class SplashScreen extends StatelessWidget {
               children: [
                 Text(
                   'Initializing AR Experience...',
-                  style: GoogleFonts.poppins(
+                  style: TextStyle(fontFamily: 'Roboto', 
                     fontSize: 13,
                     color: Colors.white.withOpacity(0.8),
                     fontWeight: FontWeight.w400,

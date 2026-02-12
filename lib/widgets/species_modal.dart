@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:share_plus/share_plus.dart';
 import '../models/species.dart';
 
@@ -142,7 +141,7 @@ class SpeciesModal extends StatelessWidget {
               // Name
               Text(
                 species.name,
-                style: GoogleFonts.poppins(
+                style: TextStyle(fontFamily: 'Roboto', 
                   fontSize: isSmall ? 24 : 28,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
@@ -155,7 +154,7 @@ class SpeciesModal extends StatelessWidget {
               // Latin name
               Text(
                 species.latin,
-                style: GoogleFonts.poppins(
+                style: TextStyle(fontFamily: 'Roboto', 
                   fontSize: isSmall ? 14 : 16,
                   fontStyle: FontStyle.italic,
                   color: Colors.white.withOpacity(0.9),
@@ -193,7 +192,7 @@ class SpeciesModal extends StatelessWidget {
                     const SizedBox(width: 8),
                     Text(
                       species.statusLabel.toUpperCase(),
-                      style: GoogleFonts.poppins(
+                      style: TextStyle(fontFamily: 'Roboto', 
                         fontSize: 11,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
@@ -268,7 +267,7 @@ class SpeciesModal extends StatelessWidget {
                       const SizedBox(width: 12),
                       Text(
                         'NEW DISCOVERY!',
-                        style: GoogleFonts.poppins(
+                        style: TextStyle(fontFamily: 'Roboto', 
                           fontSize: isSmall ? 16 : 18,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
@@ -280,7 +279,7 @@ class SpeciesModal extends StatelessWidget {
                   const SizedBox(height: 12),
                   Text(
                     '+${species.points}',
-                    style: GoogleFonts.poppins(
+                    style: TextStyle(fontFamily: 'Roboto', 
                       fontSize: isSmall ? 46 : 52,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
@@ -288,7 +287,7 @@ class SpeciesModal extends StatelessWidget {
                   ),
                   Text(
                     'CONSERVATION POINTS',
-                    style: GoogleFonts.poppins(
+                    style: TextStyle(fontFamily: 'Roboto', 
                       fontSize: 11,
                       fontWeight: FontWeight.w600,
                       color: Colors.white.withOpacity(0.9),
@@ -315,7 +314,7 @@ class SpeciesModal extends StatelessWidget {
             title: 'About',
             child: Text(
               species.desc,
-              style: GoogleFonts.poppins(
+              style: TextStyle(fontFamily: 'Roboto', 
                 fontSize: isSmall ? 13 : 14,
                 height: 1.7,
                 color: Colors.white.withOpacity(0.9),
@@ -361,7 +360,7 @@ class SpeciesModal extends StatelessWidget {
                         child: Center(
                           child: Text(
                             '${entry.key + 1}',
-                            style: GoogleFonts.poppins(
+                            style: TextStyle(fontFamily: 'Roboto', 
                               fontSize: 11,
                               fontWeight: FontWeight.bold,
                               color: const Color(0xFF10b981),
@@ -372,7 +371,7 @@ class SpeciesModal extends StatelessWidget {
                       Expanded(
                         child: Text(
                           entry.value,
-                          style: GoogleFonts.poppins(
+                          style: TextStyle(fontFamily: 'Roboto', 
                             fontSize: isSmall ? 12 : 13,
                             color: Colors.white.withOpacity(0.85),
                             height: 1.5,
@@ -421,7 +420,7 @@ class SpeciesModal extends StatelessWidget {
                     const SizedBox(width: 12),
                     Text(
                       'Conservation Efforts',
-                      style: GoogleFonts.poppins(
+                      style: TextStyle(fontFamily: 'Roboto', 
                         fontSize: isSmall ? 15 : 17,
                         fontWeight: FontWeight.bold,
                         color: const Color(0xFF60a5fa),
@@ -432,7 +431,7 @@ class SpeciesModal extends StatelessWidget {
                 const SizedBox(height: 14),
                 Text(
                   species.conservation,
-                  style: GoogleFonts.poppins(
+                  style: TextStyle(fontFamily: 'Roboto', 
                     fontSize: isSmall ? 12 : 13,
                     color: Colors.white.withOpacity(0.85),
                     height: 1.7,
@@ -453,7 +452,7 @@ class SpeciesModal extends StatelessWidget {
                   icon: const Icon(Icons.share_rounded, size: 20),
                   label: Text(
                     'Share',
-                    style: GoogleFonts.poppins(fontWeight: FontWeight.w600),
+                    style: TextStyle(fontFamily: 'Roboto', fontWeight: FontWeight.w600),
                   ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF374151),
@@ -490,7 +489,7 @@ class SpeciesModal extends StatelessWidget {
                     children: [
                       Text(
                         'Keep Exploring',
-                        style: GoogleFonts.poppins(
+                        style: TextStyle(fontFamily: 'Roboto', 
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -522,7 +521,7 @@ class SpeciesModal extends StatelessWidget {
             const SizedBox(width: 10),
             Text(
               title,
-              style: GoogleFonts.poppins(
+              style: TextStyle(fontFamily: 'Roboto', 
                 fontSize: isSmall ? 17 : 19,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
