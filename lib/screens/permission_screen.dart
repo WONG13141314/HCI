@@ -14,165 +14,182 @@ class PermissionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Force immersive mode
     SystemChrome.setEnabledSystemUIMode(
       SystemUiMode.immersiveSticky,
       overlays: [],
     );
-    
-    return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            Color(0xFF10b981),
-            Color(0xFF059669),
-            Color(0xFF047857),
-          ],
-        ),
+
+    // ─── KEY FIX ──────────────────────────────────────────────────────────────
+    // Wrapping with DefaultTextStyle resets the inherited decoration so NOTHING
+    // inside this screen can accidentally get an underline from a parent widget.
+    // ──────────────────────────────────────────────────────────────────────────
+    return DefaultTextStyle(
+      style: const TextStyle(
+        decoration: TextDecoration.none,
+        decorationColor: Colors.transparent,
+        fontFamily: 'Roboto',
+        color: Colors.white,
       ),
-      child: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(32),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const Spacer(),
+      child: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Color(0xFF10b981),
+              Color(0xFF059669),
+              Color(0xFF047857),
+            ],
+          ),
+        ),
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(32),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const Spacer(),
 
-              // Icon
-              Container(
-                padding: const EdgeInsets.all(28),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.white.withOpacity(0.2),
-                ),
-                child: const Text(
-                  '📸',
-                  style: TextStyle(fontSize: 100),
-                ),
-              )
-                  .animate()
-                  .scale(
-                    begin: const Offset(0, 0),
-                    end: const Offset(1, 1),
-                    duration: 600.ms,
-                    curve: Curves.elasticOut,
+                // Icon
+                Container(
+                  padding: const EdgeInsets.all(28),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white.withOpacity(0.2),
                   ),
+                  child: const Text(
+                    '📸',
+                    style: TextStyle(fontSize: 100),
+                  ),
+                )
+                    .animate()
+                    .scale(
+                      begin: const Offset(0, 0),
+                      end: const Offset(1, 1),
+                      duration: 600.ms,
+                      curve: Curves.elasticOut,
+                    ),
 
-              const SizedBox(height: 40),
+                const SizedBox(height: 40),
 
-              // Title
-              Text(
-                'Camera Access',
-                style: TextStyle(
-                  fontFamily: 'Roboto',
-                  fontSize: 36,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-                textAlign: TextAlign.center,
-              )
-                  .animate()
-                  .fadeIn(duration: 600.ms, delay: 200.ms)
-                  .slideY(begin: 0.3, end: 0, duration: 600.ms, delay: 200.ms),
-
-              const SizedBox(height: 24),
-
-              // Description
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: Text(
-                  'Enable camera access to experience immersive AR wildlife tracking.\n\nMove your phone around to discover and learn about endangered species in their natural habitat!',
+                // Title
+                const Text(
+                  'Camera Access',
                   style: TextStyle(
                     fontFamily: 'Roboto',
-                    fontSize: 16,
+                    fontSize: 36,
+                    fontWeight: FontWeight.bold,
                     color: Colors.white,
-                    height: 1.6,
-                    fontWeight: FontWeight.w400,
+                    decoration: TextDecoration.none,
                   ),
                   textAlign: TextAlign.center,
-                ),
-              )
-                  .animate()
-                  .fadeIn(duration: 600.ms, delay: 400.ms),
+                )
+                    .animate()
+                    .fadeIn(duration: 600.ms, delay: 200.ms)
+                    .slideY(begin: 0.3, end: 0, duration: 600.ms, delay: 200.ms),
 
-              const Spacer(),
+                const SizedBox(height: 24),
 
-              // Enable button
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: onGranted,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    foregroundColor: const Color(0xFF059669),
-                    padding: const EdgeInsets.symmetric(vertical: 18),
-                    elevation: 8,
-                    shadowColor: Colors.black.withOpacity(0.3),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
+                // Description
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: Text(
+                    'Enable camera access to experience immersive AR wildlife tracking.\n\nMove your phone around to discover and learn about endangered species in their natural habitat!',
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      fontSize: 16,
+                      color: Colors.white,
+                      height: 1.6,
+                      fontWeight: FontWeight.w400,
+                      decoration: TextDecoration.none,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                )
+                    .animate()
+                    .fadeIn(duration: 600.ms, delay: 400.ms),
+
+                const Spacer(),
+
+                // Enable Camera button
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: onGranted,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: const Color(0xFF059669),
+                      padding: const EdgeInsets.symmetric(vertical: 18),
+                      elevation: 8,
+                      shadowColor: Colors.black.withOpacity(0.3),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(Icons.camera_alt, size: 24),
+                        SizedBox(width: 12),
+                        Text(
+                          'Enable Camera',
+                          style: TextStyle(
+                            fontFamily: 'Roboto',
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xFF059669),
+                            decoration: TextDecoration.none,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(Icons.camera_alt, size: 24),
-                      const SizedBox(width: 12),
-                      Text(
-                        'Enable Camera',
-                        style: TextStyle(
-                          fontFamily: 'Roboto',
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                        ),
+                )
+                    .animate()
+                    .fadeIn(duration: 600.ms, delay: 600.ms)
+                    .slideY(begin: 0.3, end: 0, duration: 600.ms, delay: 600.ms),
+
+                const SizedBox(height: 16),
+
+                // Forest View button
+                SizedBox(
+                  width: double.infinity,
+                  child: OutlinedButton(
+                    onPressed: () => context.read<GameController>().skipToGame(),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      side: const BorderSide(color: Colors.white, width: 2.5),
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
                       ),
-                    ],
-                  ),
-                ),
-              )
-                  .animate()
-                  .fadeIn(duration: 600.ms, delay: 600.ms)
-                  .slideY(begin: 0.3, end: 0, duration: 600.ms, delay: 600.ms),
-
-              const SizedBox(height: 16),
-
-              // Skip button
-              SizedBox(
-                width: double.infinity,
-                child: OutlinedButton(
-                  onPressed: () => context.read<GameController>().skipToGame(),
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    side: const BorderSide(color: Colors.white, width: 2.5),
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(Icons.landscape, size: 22),
+                        SizedBox(width: 10),
+                        Text(
+                          'Use Forest View',
+                          style: TextStyle(
+                            fontFamily: 'Roboto',
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                            decoration: TextDecoration.none,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(Icons.landscape, size: 22),
-                      const SizedBox(width: 10),
-                      Text(
-                        'Use Forest View',
-                        style: TextStyle(
-                          fontFamily: 'Roboto',
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              )
-                  .animate()
-                  .fadeIn(duration: 600.ms, delay: 700.ms),
+                )
+                    .animate()
+                    .fadeIn(duration: 600.ms, delay: 700.ms),
 
-              const SizedBox(height: 32),
-            ],
+                const SizedBox(height: 32),
+              ],
+            ),
           ),
         ),
       ),
@@ -190,168 +207,180 @@ class TutorialScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Force immersive mode
     SystemChrome.setEnabledSystemUIMode(
       SystemUiMode.immersiveSticky,
       overlays: [],
     );
-    
-    return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            Colors.black.withOpacity(0.95),
-            Colors.black.withOpacity(0.98),
-          ],
-        ),
+
+    // ─── KEY FIX ──────────────────────────────────────────────────────────────
+    return DefaultTextStyle(
+      style: const TextStyle(
+        decoration: TextDecoration.none,
+        decorationColor: Colors.transparent,
+        fontFamily: 'Roboto',
+        color: Colors.white,
       ),
-      child: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(32),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Spacer(),
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Colors.black.withOpacity(0.95),
+              Colors.black.withOpacity(0.98),
+            ],
+          ),
+        ),
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(32),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Spacer(),
 
-              // Icon
-              const Text('🎯', style: TextStyle(fontSize: 100))
-                  .animate()
-                  .scale(
-                    begin: const Offset(0, 0),
-                    end: const Offset(1, 1),
-                    duration: 600.ms,
-                    curve: Curves.elasticOut,
-                  ),
-
-              const SizedBox(height: 32),
-
-              // Title
-              Text(
-                'How It Works',
-                style: TextStyle(
-                  fontFamily: 'Roboto',
-                  fontSize: 36,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              )
-                  .animate()
-                  .fadeIn(duration: 600.ms, delay: 200.ms),
-
-              const SizedBox(height: 32),
-
-              // Instructions
-              _InstructionCard(
-                icon: '📱',
-                title: 'Move Your Camera',
-                description: 'Slowly pan your phone around to scan the environment',
-                delay: 300,
-              ),
-
-              const SizedBox(height: 16),
-
-              _InstructionCard(
-                icon: '🦜',
-                title: 'Spot Wildlife',
-                description: 'Wildlife will appear nearby - pan until you find them',
-                delay: 400,
-              ),
-
-              const SizedBox(height: 16),
-
-              _InstructionCard(
-                icon: '🔍',
-                title: 'Capture & Learn',
-                description: 'Centre them in the viewfinder and tap SCAN to discover facts',
-                delay: 500,
-              ),
-
-              const Spacer(),
-
-              // Progress indicator
-              Consumer<GameController>(
-                builder: (context, ctrl, _) {
-                  return Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 24,
-                      vertical: 16,
+                // Icon
+                const Text('🎯', style: TextStyle(fontSize: 100))
+                    .animate()
+                    .scale(
+                      begin: const Offset(0, 0),
+                      end: const Offset(1, 1),
+                      duration: 600.ms,
+                      curve: Curves.elasticOut,
                     ),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF10b981).withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(
-                        color: const Color(0xFF10b981).withOpacity(0.5),
-                        width: 2,
+
+                const SizedBox(height: 32),
+
+                // Title
+                const Text(
+                  'How It Works',
+                  style: TextStyle(
+                    fontFamily: 'Roboto',
+                    fontSize: 36,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    decoration: TextDecoration.none,
+                  ),
+                )
+                    .animate()
+                    .fadeIn(duration: 600.ms, delay: 200.ms),
+
+                const SizedBox(height: 32),
+
+                // Instructions
+                _InstructionCard(
+                  icon: '📱',
+                  title: 'Move Your Camera',
+                  description: 'Slowly pan your phone around to scan the environment',
+                  delay: 300,
+                ),
+
+                const SizedBox(height: 16),
+
+                _InstructionCard(
+                  icon: '🦜',
+                  title: 'Spot Wildlife',
+                  description: 'Wildlife will appear nearby - pan until you find them',
+                  delay: 400,
+                ),
+
+                const SizedBox(height: 16),
+
+                _InstructionCard(
+                  icon: '🔍',
+                  title: 'Capture & Learn',
+                  description: 'Centre them in the viewfinder and tap SCAN to discover facts',
+                  delay: 500,
+                ),
+
+                const Spacer(),
+
+                // Progress indicator
+                Consumer<GameController>(
+                  builder: (context, ctrl, _) {
+                    return Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 16,
+                      ),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF10b981).withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(
+                          color: const Color(0xFF10b981).withOpacity(0.5),
+                          width: 2,
+                        ),
+                      ),
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.emoji_events,
+                            color: Color(0xFF10b981),
+                            size: 24,
+                          ),
+                          SizedBox(width: 12),
+                          Text(
+                            'Discover all 6 endangered species',
+                            style: TextStyle(
+                              fontFamily: 'Roboto',
+                              fontSize: 14,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                              decoration: TextDecoration.none,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                )
+                    .animate()
+                    .fadeIn(duration: 600.ms, delay: 600.ms),
+
+                const SizedBox(height: 24),
+
+                // Start button
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: onStart,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF10b981),
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 18),
+                      elevation: 8,
+                      shadowColor: const Color(0xFF10b981).withOpacity(0.5),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
                       ),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(
-                          Icons.emoji_events,
-                          color: Color(0xFF10b981),
-                          size: 24,
-                        ),
-                        const SizedBox(width: 12),
+                      children: const [
                         Text(
-                          'Discover all 6 endangered species',
+                          'Start Exploring',
                           style: TextStyle(
                             fontFamily: 'Roboto',
-                            fontSize: 14,
-                            color: Colors.white,
+                            fontSize: 18,
                             fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                            decoration: TextDecoration.none,
                           ),
                         ),
+                        SizedBox(width: 12),
+                        Text('🌿', style: TextStyle(fontSize: 20)),
                       ],
                     ),
-                  );
-                },
-              )
-                  .animate()
-                  .fadeIn(duration: 600.ms, delay: 600.ms),
-
-              const SizedBox(height: 24),
-
-              // Start button
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: onStart,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF10b981),
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(vertical: 18),
-                    elevation: 8,
-                    shadowColor: const Color(0xFF10b981).withOpacity(0.5),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Start Exploring',
-                        style: TextStyle(
-                          fontFamily: 'Roboto',
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      const Text('🌿', style: TextStyle(fontSize: 20)),
-                    ],
-                  ),
-                ),
-              )
-                  .animate()
-                  .fadeIn(duration: 600.ms, delay: 700.ms)
-                  .slideY(begin: 0.3, end: 0, duration: 600.ms, delay: 700.ms),
+                )
+                    .animate()
+                    .fadeIn(duration: 600.ms, delay: 700.ms)
+                    .slideY(begin: 0.3, end: 0, duration: 600.ms, delay: 700.ms),
 
-              const SizedBox(height: 24),
-            ],
+                const SizedBox(height: 24),
+              ],
+            ),
           ),
         ),
       ),
@@ -404,11 +433,12 @@ class _InstructionCard extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontFamily: 'Roboto',
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
                     color: Colors.white,
+                    decoration: TextDecoration.none,
                   ),
                 ),
                 const SizedBox(height: 4),
@@ -419,6 +449,7 @@ class _InstructionCard extends StatelessWidget {
                     fontSize: 13,
                     color: Colors.white.withOpacity(0.7),
                     height: 1.4,
+                    decoration: TextDecoration.none,
                   ),
                 ),
               ],
