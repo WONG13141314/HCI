@@ -150,7 +150,7 @@ class _ArViewfinderState extends State<ArViewfinder>
                   duration: 600.ms,
                   curve: Curves.easeInOut,
                 )
-                .fadeIn(begin: 0.5, end: 1.0, duration: 600.ms),
+                .fadeIn(duration: 600.ms),  // FIXED: Removed 'begin' and 'end' - fadeIn only needs duration
 
           // Lock icon when targeted
           if (widget.locked)
@@ -293,7 +293,6 @@ class _CrosshairPainter extends CustomPainter {
 
     final center = Offset(size.width / 2, size.height / 2);
     const gap = 8.0;
-    const length = 12.0;
 
     // Vertical line (top)
     canvas.drawLine(

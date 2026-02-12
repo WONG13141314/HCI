@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:camera/camera.dart';
 import 'package:provider/provider.dart';
-// REMOVED: import 'game/game_controller.dart';
+import 'game/game_controller.dart';
 import 'screens/splash_screen.dart';
 import 'screens/permission_screen.dart';
 import 'screens/ar_game_screen.dart';
@@ -49,21 +49,21 @@ class WildTrackApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(
             seedColor: const Color(0xFF10b981),
             brightness: Brightness.dark,
+          ).copyWith(
             primary: const Color(0xFF10b981),
             secondary: const Color(0xFF059669),
             surface: const Color(0xFF1a1a1a),
-            background: const Color(0xFF0a0a0a),
           ),
-          // CHANGED: Using default font instead of Google Fonts
           textTheme: ThemeData.dark().textTheme.apply(
             bodyColor: Colors.white,
             displayColor: Colors.white,
-            fontFamily: 'Roboto', // System font
+            fontFamily: 'Roboto',
           ),
-          cardTheme: CardTheme(
+          // FIXED: Changed CardTheme to CardThemeData
+          cardTheme: const CardThemeData(
             elevation: 8,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.all(Radius.circular(20)),
             ),
           ),
           elevatedButtonTheme: ElevatedButtonThemeData(
@@ -73,7 +73,6 @@ class WildTrackApp extends StatelessWidget {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16),
               ),
-              // CHANGED: Using TextStyle instead of GoogleFonts
               textStyle: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
