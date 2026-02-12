@@ -50,7 +50,6 @@ class GameController extends ChangeNotifier {
 
   // ── Motion accumulator for spawning ─────────────────────────────────────────
   double _motionAccum = 0;
-  double _prevGyrX = 0, _prevGyrY = 0;
 
   // ── Status message ───────────────────────────────────────────────────────────
   String statusMessage = '';
@@ -112,7 +111,7 @@ class GameController extends ChangeNotifier {
     notifyListeners();
   }
 
-  // ─── Gyroscope integration ─────────────────────────────────────────────────
+  // ─── Gyroscope integration (FIXED - Natural camera movement) ───────────────
 
   void _startGyroscope() {
     _gyroSub = gyroscopeEventStream(samplingPeriod: SensorInterval.gameInterval)
@@ -121,8 +120,11 @@ class GameController extends ChangeNotifier {
       // Integrate at ~50Hz (gameInterval ≈ 20ms)
       const dt = 0.02;
 
-      final dYaw   = e.y * dt * (180 / pi);  // rad → degrees
-      final dPitch = e.x * dt * (180 / pi);
+      // FIXED: Reversed the signs to match natural camera movement
+      // When you pan RIGHT, yaw should INCREASE (positive)
+      // When you tilt UP, pitch should INCREASE (positive)
+      final dYaw   = -e.y * dt * (180 / pi);  // Negated for natural movement
+      final dPitch = -e.x * dt * (180 / pi);  // Negated for natural movement
 
       currentYaw   += dYaw;
       currentPitch  = (currentPitch + dPitch).clamp(-60.0, 60.0);

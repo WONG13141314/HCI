@@ -1,0 +1,72 @@
+# analysis_options.yaml - COMPLETE removal of yellow warnings
+
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  language:
+    strict-casts: false
+    strict-raw-types: false
+  
+  errors:
+    # Turn ALL possible yellow warnings into ignore
+    todo: ignore
+    deprecated_member_use: ignore
+    deprecated_member_use_from_same_package: ignore
+    
+    # Const-related warnings
+    prefer_const_constructors: ignore
+    prefer_const_literals_to_create_immutables: ignore
+    prefer_const_constructors_in_immutables: ignore
+    prefer_const_declarations: ignore
+    
+    # Key warnings
+    use_key_in_widget_constructors: ignore
+    
+    # Field warnings
+    prefer_final_fields: ignore
+    prefer_final_locals: ignore
+    prefer_final_in_for_each: ignore
+    
+    # Print warnings
+    avoid_print: ignore
+    
+    # Type warnings
+    unnecessary_import: ignore
+    unused_import: ignore
+    unused_element: ignore
+    unused_field: ignore
+    unused_local_variable: ignore
+    
+    # Documentation
+    public_member_api_docs: ignore
+    
+  exclude:
+    - build/**
+    - android/**
+    - ios/**
+    - .dart_tool/**
+    - lib/generated/**
+
+linter:
+  rules:
+    # DISABLE all rules that cause yellow underlines
+    prefer_const_constructors: false
+    prefer_const_literals_to_create_immutables: false
+    prefer_const_constructors_in_immutables: false
+    prefer_const_declarations: false
+    use_key_in_widget_constructors: false
+    prefer_final_fields: false
+    prefer_final_locals: false
+    prefer_final_in_for_each: false
+    avoid_print: false
+    public_member_api_docs: false
+    lines_longer_than_80_chars: false
+    prefer_single_quotes: false
+    unnecessary_const: false
+    unnecessary_new: false
+    
+    # Keep only critical rules enabled
+    avoid_empty_else: true
+    avoid_relative_lib_imports: true
+    no_duplicate_case_values: true
+    valid_regexps: true

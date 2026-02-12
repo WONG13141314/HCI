@@ -17,11 +17,16 @@ class SpeciesModal extends StatelessWidget {
 
   Color get _statusColor {
     switch (species.status) {
-      case ConservationStatus.critical:   return const Color(0xFF991b1b);
-      case ConservationStatus.endangered: return const Color(0xFFdc2626);
-      case ConservationStatus.vulnerable: return const Color(0xFFeab308);
-      case ConservationStatus.threatened: return const Color(0xFFf59e0b);
-      case ConservationStatus.rare:       return const Color(0xFF8b5cf6);
+      case ConservationStatus.critical:
+        return Color(0xFF991b1b);
+      case ConservationStatus.endangered:
+        return Color(0xFFdc2626);
+      case ConservationStatus.vulnerable:
+        return Color(0xFFeab308);
+      case ConservationStatus.threatened:
+        return Color(0xFFf59e0b);
+      case ConservationStatus.rare:
+        return Color(0xFF8b5cf6);
     }
   }
 
@@ -35,63 +40,71 @@ class SpeciesModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+    final isSmallScreen = screenSize.height < 700;
+    
     return Container(
       color: Colors.black87,
       child: Center(
         child: Container(
-          margin: const EdgeInsets.all(22),
-          constraints: const BoxConstraints(maxWidth: 520),
+          margin: EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: isSmallScreen ? 20 : 40,
+          ),
+          constraints: BoxConstraints(
+            maxWidth: 500,
+            maxHeight: screenSize.height * 0.9,
+          ),
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(32),
+            borderRadius: BorderRadius.circular(24),
           ),
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(32),
+            borderRadius: BorderRadius.circular(24),
             child: SingleChildScrollView(
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  // ── Header ────────────────────────────────────────────────
+                  // Header
                   Container(
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       gradient: LinearGradient(
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                         colors: [Color(0xFF10b981), Color(0xFF059669)],
                       ),
                     ),
-                    padding: const EdgeInsets.fromLTRB(32, 42, 32, 32),
+                    padding: EdgeInsets.fromLTRB(24, isSmallScreen ? 30 : 40, 24, 24),
                     child: Stack(
                       children: [
                         Column(
                           children: [
-                            Text(species.icon,
-                                style: const TextStyle(fontSize: 105)),
-                            const SizedBox(height: 22),
+                            Text(species.icon, style: TextStyle(fontSize: isSmallScreen ? 80 : 100)),
+                            SizedBox(height: 16),
                             Text(species.name,
-                                style: const TextStyle(
-                                    fontSize: 32,
+                                style: TextStyle(
+                                    fontSize: isSmallScreen ? 26 : 30,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white),
                                 textAlign: TextAlign.center),
-                            const SizedBox(height: 9),
+                            SizedBox(height: 8),
                             Text(species.latin,
-                                style: const TextStyle(
-                                    fontSize: 18,
+                                style: TextStyle(
+                                    fontSize: isSmallScreen ? 15 : 17,
                                     fontStyle: FontStyle.italic,
                                     color: Colors.white),
                                 textAlign: TextAlign.center),
-                            const SizedBox(height: 20),
+                            SizedBox(height: 16),
                             Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 24, vertical: 10),
+                              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
                               decoration: BoxDecoration(
                                 color: _statusColor,
-                                borderRadius: BorderRadius.circular(22),
+                                borderRadius: BorderRadius.circular(18),
                               ),
                               child: Text(
                                 species.statusLabel.toUpperCase(),
-                                style: const TextStyle(
-                                    fontSize: 13,
+                                style: TextStyle(
+                                    fontSize: 12,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white,
                                     letterSpacing: 0.8),
@@ -105,14 +118,13 @@ class SpeciesModal extends StatelessWidget {
                           child: GestureDetector(
                             onTap: onClose,
                             child: Container(
-                              width: 42,
-                              height: 42,
+                              width: 38,
+                              height: 38,
                               decoration: BoxDecoration(
-                                color: Colors.white.withOpacity(0.28),
+                                color: Colors.white.withOpacity(0.25),
                                 shape: BoxShape.circle,
                               ),
-                              child: const Icon(Icons.close,
-                                  color: Colors.white, size: 24),
+                              child: Icon(Icons.close, color: Colors.white, size: 22),
                             ),
                           ),
                         ),
@@ -120,9 +132,9 @@ class SpeciesModal extends StatelessWidget {
                     ),
                   ),
 
-                  // ── Body ──────────────────────────────────────────────────
+                  // Body
                   Padding(
-                    padding: const EdgeInsets.all(32),
+                    padding: EdgeInsets.all(isSmallScreen ? 20 : 28),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -130,92 +142,88 @@ class SpeciesModal extends StatelessWidget {
                         if (isNew) ...[
                           Container(
                             width: double.infinity,
-                            padding: const EdgeInsets.all(24),
+                            padding: EdgeInsets.all(isSmallScreen ? 18 : 22),
                             decoration: BoxDecoration(
-                              gradient: const LinearGradient(
+                              gradient: LinearGradient(
                                 colors: [Color(0xFFf093fb), Color(0xFFf5576c)],
                               ),
-                              borderRadius: BorderRadius.circular(24),
+                              borderRadius: BorderRadius.circular(20),
                             ),
                             child: Column(
                               children: [
-                                const Text('🎉 New Discovery!',
-                                    style: TextStyle(
-                                        fontSize: 18, color: Colors.white)),
-                                const SizedBox(height: 9),
+                                Text('🎉 New Discovery!',
+                                    style: TextStyle(fontSize: isSmallScreen ? 16 : 18, color: Colors.white)),
+                                SizedBox(height: 8),
                                 Text('+${species.points}',
-                                    style: const TextStyle(
-                                        fontSize: 52,
+                                    style: TextStyle(
+                                        fontSize: isSmallScreen ? 44 : 50,
                                         fontWeight: FontWeight.bold,
                                         color: Colors.white)),
                               ],
                             ),
                           ),
-                          const SizedBox(height: 28),
+                          SizedBox(height: 20),
                         ],
 
                         // About
-                        const Text('📖 About',
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold)),
-                        const SizedBox(height: 16),
+                        Text('📖 About',
+                            style: TextStyle(fontSize: isSmallScreen ? 18 : 20, fontWeight: FontWeight.bold)),
+                        SizedBox(height: 12),
                         Text(species.desc,
-                            style: const TextStyle(
-                                fontSize: 16,
-                                height: 1.85,
+                            style: TextStyle(
+                                fontSize: isSmallScreen ? 14 : 15,
+                                height: 1.6,
                                 color: Color(0xFF4a4a4a))),
-                        const SizedBox(height: 28),
+                        SizedBox(height: 20),
 
                         // Facts
-                        const Text('✨ Facts',
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold)),
-                        const SizedBox(height: 16),
+                        Text('✨ Facts',
+                            style: TextStyle(fontSize: isSmallScreen ? 18 : 20, fontWeight: FontWeight.bold)),
+                        SizedBox(height: 12),
                         ...species.facts.map((f) => Container(
-                              margin: const EdgeInsets.only(bottom: 11),
-                              padding: const EdgeInsets.fromLTRB(18, 15, 18, 15),
+                              margin: EdgeInsets.only(bottom: 10),
+                              padding: EdgeInsets.all(isSmallScreen ? 12 : 14),
                               decoration: BoxDecoration(
-                                color: const Color(0xFFf0fdf4),
-                                borderRadius: BorderRadius.circular(12),
-                                border: const Border(
-                                    left: BorderSide(
-                                        color: Color(0xFF10b981), width: 5)),
+                                color: Color(0xFFf0fdf4),
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border(
+                                    left: BorderSide(color: Color(0xFF10b981), width: 4)),
                               ),
                               child: Text(f,
-                                  style: const TextStyle(
-                                      fontSize: 15,
+                                  style: TextStyle(
+                                      fontSize: isSmallScreen ? 13 : 14,
                                       color: Color(0xFF1a4d2e),
-                                      height: 1.65)),
+                                      height: 1.5)),
                             )),
-                        const SizedBox(height: 28),
+                        SizedBox(height: 20),
 
                         // Conservation
                         Container(
-                          padding: const EdgeInsets.all(24),
+                          padding: EdgeInsets.all(isSmallScreen ? 18 : 20),
                           decoration: BoxDecoration(
-                            gradient: const LinearGradient(
+                            gradient: LinearGradient(
                               colors: [Color(0xFFdbeafe), Color(0xFFbfdbfe)],
                             ),
-                            borderRadius: BorderRadius.circular(22),
+                            borderRadius: BorderRadius.circular(18),
                           ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text('🌍 Conservation',
+                              Text('🌍 Conservation',
                                   style: TextStyle(
-                                      fontSize: 18,
+                                      fontSize: isSmallScreen ? 16 : 18,
                                       fontWeight: FontWeight.bold,
                                       color: Color(0xFF1e40af))),
-                              const SizedBox(height: 13),
+                              SizedBox(height: 10),
                               Text(species.conservation,
-                                  style: const TextStyle(
-                                      fontSize: 15,
+                                  style: TextStyle(
+                                      fontSize: isSmallScreen ? 13 : 14,
                                       color: Color(0xFF1e3a8a),
-                                      height: 1.75)),
+                                      height: 1.6)),
                             ],
                           ),
                         ),
-                        const SizedBox(height: 28),
+                        SizedBox(height: 20),
 
                         // Action buttons
                         Row(
@@ -223,38 +231,36 @@ class SpeciesModal extends StatelessWidget {
                             Expanded(
                               child: ElevatedButton.icon(
                                 onPressed: _share,
-                                icon: const Icon(Icons.share),
-                                label: const Text('Share'),
+                                icon: Icon(Icons.share, size: 18),
+                                label: Text('Share'),
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xFFe5e7eb),
+                                  backgroundColor: Color(0xFFe5e7eb),
                                   foregroundColor: Colors.black87,
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 19),
+                                  padding: EdgeInsets.symmetric(vertical: isSmallScreen ? 14 : 16),
                                   shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20)),
-                                  textStyle: const TextStyle(
-                                      fontSize: 17,
+                                      borderRadius: BorderRadius.circular(16)),
+                                  textStyle: TextStyle(
+                                      fontSize: isSmallScreen ? 15 : 16,
                                       fontWeight: FontWeight.bold),
                                   elevation: 0,
                                 ),
                               ),
                             ),
-                            const SizedBox(width: 14),
+                            SizedBox(width: 12),
                             Expanded(
                               child: ElevatedButton(
                                 onPressed: onClose,
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xFF10b981),
+                                  backgroundColor: Color(0xFF10b981),
                                   foregroundColor: Colors.white,
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 19),
+                                  padding: EdgeInsets.symmetric(vertical: isSmallScreen ? 14 : 16),
                                   shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20)),
-                                  textStyle: const TextStyle(
-                                      fontSize: 17,
+                                      borderRadius: BorderRadius.circular(16)),
+                                  textStyle: TextStyle(
+                                      fontSize: isSmallScreen ? 15 : 16,
                                       fontWeight: FontWeight.bold),
                                 ),
-                                child: const Text('Keep Hunting'),
+                                child: Text('Keep Hunting'),
                               ),
                             ),
                           ],
